@@ -9,7 +9,10 @@ dataset_folder = "Animal Image Dataset" #The dataset that contains all the image
  
 animal_folders = os.listdir(dataset_folder) #creating a list for the subfolders in our dataset folder
 
-transforms = v2.Compose
+transforms = v2.Compose([
+    v2.ToTensor(),
+    v2.Resize([5,5])
+])
 image_files = [] # creating a filepath to store the images 
  
 for animal_folder in animal_folders:#I am making a loop to collect the images
