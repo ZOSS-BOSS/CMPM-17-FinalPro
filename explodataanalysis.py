@@ -2,6 +2,8 @@ import os
 import random
 import matplotlib.pyplot as plt
 from PIL import Image
+from torchvision.transforms import v2
+import torch
 
 categories = []
 folderpath = "C:/Users/Zane/Documents/CPMP-17-ML/CMPM-17-FirstRepo/archive/Animal Image Dataset/"
@@ -9,17 +11,20 @@ for path in os.listdir(folderpath):
     # print(path)
     categories.append(folderpath + path + "/")
 
+transforms = v2.Compose (
+    [v2.ToTensor()]
+)
 for i in range(25):
     animal = random.choice(categories)
     picture = os.listdir(animal)
     picture = animal + random.choice(picture)
-    subplot = plt.subplot(5,5,i+1)
-    subplot.imshow(Image.open(picture))
-    subplot.axis("off")
+    picture = Image.open(picture)
+    
+    picture = transforms(picture)
+    
+    print(picture.shape)
 
-plt.tight_layout()
 
-plt.show()
 
 
     
