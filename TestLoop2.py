@@ -17,9 +17,9 @@ for animal_type in animal_folders:
 print(image_paths[0])
 
 transform = transforms.Compose([
+    transforms.ToTensor(),
     transforms.RandomResizedCrop(size=(225, 300), scale=(0.5, 1), antialias=True),
-    transforms.RandomHorizontalFlip(p=0.3),
-    transforms.ToTensor(),   
+    transforms.RandomHorizontalFlip(p=0.3),  
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),  # from the image_augumentation.py
 ])
 
@@ -31,13 +31,16 @@ class AnimalDataset(Dataset):#Create a class that inherits from the PyTorch Data
        #listing the folders in the dataset
 
     def __len__(self):#to return the # of images in the dataset
-        return len(self.image_paths)
+        return len(self.values)
 
     def __getitem__(self, idx):
-        input = self.values[0,idx]
-        output = self.values[1,idx]
-        input = Image.open(input).convert("RGB")  # RGB format
-        return input,output
+        print(idx)
+        input = self.values[idx][0]
+        output = self.values[idx][1]
+        input = Image.open(input).convert("RGB")
+        input = transform(input)  # RGB format
+        return input, output
+
 
 training_data = image_paths[0:int((len(image_paths)*0.7))]
 testing_data = image_paths[int((len(image_paths)*0.7)):int(len(image_paths)*0.85)]
