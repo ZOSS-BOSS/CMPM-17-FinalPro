@@ -3,7 +3,8 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
 import os
-import pandas
+import pandas as pd
+import wandb
 
 # Create a dataframe of path and label
 dataset_folder = "C:/Users/zspeiser/Desktop/code/CMPM-17-FinalPro/Animal Image Dataset/" #The dataset that contains all the images
@@ -14,6 +15,9 @@ for animal_type in animal_folders:
     for animal_image_path in animal_type:
         image_paths.append([dataset_folder + "/" + animal_type + "/" + animal_image_path,animal_type])
 
+image_paths = pd.DataFrame(image_paths)
+
+print(image_paths)
 print(image_paths[0])
 
 transform = transforms.Compose([
@@ -35,8 +39,8 @@ class AnimalDataset(Dataset):#Create a class that inherits from the PyTorch Data
 
     def __getitem__(self, idx):
         print(idx)
-        input = self.values[idx][0]
-        output = self.values[idx][1]
+        input = self.values[idx,0]
+        output = self.values[idx,1]
         input = Image.open(input).convert("RGB")
         input = transform(input)  # RGB format
         return input, output
@@ -77,7 +81,50 @@ train_loop(train_loader)
 print("\nTesting Loop:")
 test_loop(test_loader)
 
-def forward():
-    loss.backward()
-    optimizer.step()
-    optimizer.zero_grad()
+loss_func = nn.CrossEntropyLoss()
+
+class ConvModel(nn.Module):
+   
+    def __init__(self):
+        self.conv1 = nn.Conv(3,32,kernel_size = 3, stride = 1, padding = 1)
+        self.conv2 = nn.Conv(32,32,kernel_size = 3, stride = 1, padding = 1)
+        self.conv3 = nn.Conv(32,16, kernel_size = 3, stride = 1, padding = 1)
+        self.relu = nn.ReLU()
+        self.maxpool = nn.MaxPool2d (kernel_size = 2, stride = 2)
+        self.lin1 = nn.Linear((225*300*16)/64,12)
+    
+    def forward(self, input):
+        partial = self.conv1(input)
+        partial = self.relu(partial)
+        partial = self.maxpool(partial)
+        partial = self.conv2(partial)
+        partial = self.relu (partial)
+        partial = self.maxpool (partial)
+        partial = self.conv3 (partial)
+        partial = self.relu (partial)
+        partial = self.maxpool (partial)
+        partial = partial.flatten(start_dim = 1)
+        partial = self.lin1(partial)
+        return partial
+
+optimizer = torch.optim.Adam(myHouseModel.parameters(),lr = 0.01, weight_decay=0.01)
+conv_model = ConvModel()
+run = wandb.init(project="Image Convolution", name = "first run")
+
+for inputs, outputs in train_loader:
+    for vinputs, voutputs in validate_loader:
+        pred = conv_model(inputs)
+        loss = loss_func(pred, outputs)
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+        with torch.no_grad():
+            val_pred = ConvModel(vinputs)
+            val_loss = loss_func(val_pred, voutputs)
+            print (val_loss)
+        run.log({"train loss": loss, "validation loss":val_loss})
+        
+for inputs, outputs in test_loader:
+    pred = conv_model(inputs)
+    loss = loss_func(pred, outputs)
+    run.log({"test loss":loss})
