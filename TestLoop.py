@@ -3,8 +3,17 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
 import os
+import pandas
 
-  
+# Create a dataframe of path and label
+dataset_folder = "C:/Users/zspeiser/Desktop/code/CMPM-17-FinalPro/Animal Image Dataset/" #The dataset that contains all the images
+animal_folders = os.listdir(dataset_folder)
+image_paths = []
+for animal_type in animal_folders:
+    for animal_image_path in animal_type:
+        image_paths.append([dataset_folder + "/" + animal_type + "/" + animal_image_path,animal_type])
+
+class 
 transform = transforms.Compose([
     transforms.RandomResizedCrop(size=(225, 300), scale=(0.5, 1), antialias=True),
     transforms.RandomHorizontalFlip(p=0.3),
@@ -33,9 +42,10 @@ class AnimalDataset(Dataset):#Create a class that inherits from the PyTorch Data
         return len(self.image_paths)
 
     def __getitem__(self, idx):
-        image_path = self.image_paths[idx]
-        label = self.labels[idx]
-        image = Image.open(image_path).convert("RGB")  # RGB format
+        input = image_paths[0,idx]
+        output = image_paths[1,idx]
+        input = Image.open(input).convert("RGB")  # RGB format
+        return input,output
 
         
         if self.transform:#applying transformations
@@ -77,3 +87,8 @@ train_loop(train_loader)
 
 print("\nTesting Loop:")
 test_loop(test_loader)
+
+def forward():
+    loss.backward()
+    optimizer.step()
+    optimizer.zero_grad()

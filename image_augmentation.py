@@ -20,7 +20,6 @@ augment_transforms = v2.Compose([
     v2.RandomHorizontalFlip(p=0.3),
     v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225],),
 ])
-random_animal = []
 
 picture  = Image.open("CMPM-17-FirstRepo/archive/Animal Image Dataset/cow/OIP-_Dx1fsxBCBSXQ_kgAXAxVwHaDP.jpeg")
 picture = resize_transforms(picture)
