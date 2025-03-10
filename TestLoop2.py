@@ -1,6 +1,7 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
+import torch.nn as nn
 from PIL import Image
 import os
 import pandas as pd
@@ -16,9 +17,9 @@ for animal_type in animal_folders:
         image_paths.append([dataset_folder + "/" + animal_type + "/" + animal_image_path,animal_type])
 
 image_paths = pd.DataFrame(image_paths)
+image_paths = pd.get_dummies(image_paths, columns = [1])
+# print(image_paths.loc[2:5])
 
-print(image_paths)
-print(image_paths[0])
 
 transform = transforms.Compose([
     transforms.ToTensor(),
@@ -39,16 +40,16 @@ class AnimalDataset(Dataset):#Create a class that inherits from the PyTorch Data
 
     def __getitem__(self, idx):
         print(idx)
-        input = self.values[idx,0]
-        output = self.values[idx,1]
+        input = self.values.loc[idx,0]
+        output = self.values.loc[idx,1]
         input = Image.open(input).convert("RGB")
         input = transform(input)  # RGB format
         return input, output
 
 
-training_data = image_paths[0:int((len(image_paths)*0.7))]
-testing_data = image_paths[int((len(image_paths)*0.7)):int(len(image_paths)*0.85)]
-validation_data = image_paths[int((len(image_paths)*0.85)):]
+training_data = image_paths.loc[0:int((len(image_paths)*0.7))]
+testing_data = image_paths.loc[int((len(image_paths)*0.7)):int(len(image_paths)*0.85)]
+validation_data = image_paths.loc[int((len(image_paths)*0.85)):]
  
 train_dataset = AnimalDataset(training_data)
 test_dataset = AnimalDataset(testing_data)
@@ -60,38 +61,19 @@ validation_dataset = AnimalDataset(validation_data)
 train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)#Create dataloaders
 test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False)
 validate_loader = DataLoader(validation_dataset, batch_size = 8, shuffle = True)
- 
-def train_loop(dataloader):#train loop
-    for batch_idx, (data, target) in enumerate(dataloader):
-        print(f"Train Batch {batch_idx + 1}:")
-        print("Input Data (Image Tensor):", data.shape)  # Print the shape of the image tensor
-        print("Target Labels:", target)
-
-
-def test_loop(dataloader):#test loop
-    for batch_idx, (data, target) in enumerate(dataloader):
-        print(f"Test Batch {batch_idx + 1}:")
-        print("Input Data (Image Tensor):", data.shape)  # Print the shape of the image tensor
-        print("Target Labels:", target)
-
- 
-print("Training Loop:")
-train_loop(train_loader)
-
-print("\nTesting Loop:")
-test_loop(test_loader)
 
 loss_func = nn.CrossEntropyLoss()
 
 class ConvModel(nn.Module):
    
     def __init__(self):
-        self.conv1 = nn.Conv(3,32,kernel_size = 3, stride = 1, padding = 1)
-        self.conv2 = nn.Conv(32,32,kernel_size = 3, stride = 1, padding = 1)
-        self.conv3 = nn.Conv(32,16, kernel_size = 3, stride = 1, padding = 1)
+        super().__init__()
+        self.conv1 = nn.Conv2d(3,32,kernel_size = 3, stride = 1, padding = 1)
+        self.conv2 = nn.Conv2d(32,32,kernel_size = 3, stride = 1, padding = 1)
+        self.conv3 = nn.Conv2d(32,16, kernel_size = 3, stride = 1, padding = 1)
         self.relu = nn.ReLU()
         self.maxpool = nn.MaxPool2d (kernel_size = 2, stride = 2)
-        self.lin1 = nn.Linear((225*300*16)/64,12)
+        self.lin1 = nn.Linear(int((225*300*16)/64),12)
     
     def forward(self, input):
         partial = self.conv1(input)
@@ -107,8 +89,8 @@ class ConvModel(nn.Module):
         partial = self.lin1(partial)
         return partial
 
-optimizer = torch.optim.Adam(myHouseModel.parameters(),lr = 0.01, weight_decay=0.01)
 conv_model = ConvModel()
+optimizer = torch.optim.Adam(conv_model.parameters(),lr = 0.01, weight_decay=0.01)
 run = wandb.init(project="Image Convolution", name = "first run")
 
 for inputs, outputs in train_loader:
