@@ -13,7 +13,7 @@ animal_folders = os.listdir(dataset_folder)
 image_paths = []
 
 for animal_type in animal_folders:
-    for animal_image_path in animal_type:
+    for animal_image_path in os.listdir(dataset_folder + "/" + animal_type):
         image_paths.append([dataset_folder + "/" + animal_type + "/" + animal_image_path,animal_type])
 
 image_paths = pd.DataFrame(image_paths)
@@ -40,8 +40,9 @@ class AnimalDataset(Dataset):#Create a class that inherits from the PyTorch Data
 
     def __getitem__(self, idx):
         print(idx)
-        input = self.values.loc[idx,0]
-        output = self.values.loc[idx,1]
+        print(self.values.head)
+        input = self.values.iloc[idx,0]
+        output = self.values.iloc[idx,1:12]
         input = Image.open(input).convert("RGB")
         input = transform(input)  # RGB format
         return input, output
@@ -50,12 +51,12 @@ class AnimalDataset(Dataset):#Create a class that inherits from the PyTorch Data
 training_data = image_paths.loc[0:int((len(image_paths)*0.7))]
 testing_data = image_paths.loc[int((len(image_paths)*0.7)):int(len(image_paths)*0.85)]
 validation_data = image_paths.loc[int((len(image_paths)*0.85)):]
- 
+
 train_dataset = AnimalDataset(training_data)
 test_dataset = AnimalDataset(testing_data)
 validation_dataset = AnimalDataset(validation_data)
 #full dataset
-
+print(train_dataset)
 # Split the dataset into training and testing (50% training, 50% testing)
  
 train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)#Create dataloaders
@@ -93,10 +94,10 @@ conv_model = ConvModel()
 optimizer = torch.optim.Adam(conv_model.parameters(),lr = 0.01, weight_decay=0.01)
 run = wandb.init(project="Image Convolution", name = "first run")
 
-for inputs, outputs in train_loader:
+for input, output in train_loader:
     for vinputs, voutputs in validate_loader:
-        pred = conv_model(inputs)
-        loss = loss_func(pred, outputs)
+        pred = conv_model(input)
+        loss = loss_func(pred, output)
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
