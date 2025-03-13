@@ -8,7 +8,7 @@ import pandas as pd
 import wandb
 
 # Create a dataframe of path and label
-dataset_folder = "C:/Users/zspeiser/Desktop/code/CMPM-17-FinalPro/Animal Image Dataset/" #The dataset that contains all the images
+dataset_folder = "Animal Image Dataset" #The dataset that contains all the images
 animal_folders = os.listdir(dataset_folder)
 image_paths = []
 

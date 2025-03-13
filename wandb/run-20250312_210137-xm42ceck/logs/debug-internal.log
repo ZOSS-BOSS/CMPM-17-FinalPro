@@ -1,0 +1,15 @@
+{"time":"2025-03-12T21:01:37.429409-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"/Users/josephinewang/Desktop/INtro to ML/CMPM-17-FinalPro/wandb/run-20250312_210137-xm42ceck/logs/debug-core.log"}
+{"time":"2025-03-12T21:01:38.054347-07:00","level":"INFO","msg":"created new stream","id":"xm42ceck"}
+{"time":"2025-03-12T21:01:38.054561-07:00","level":"INFO","msg":"stream: started","id":"xm42ceck"}
+{"time":"2025-03-12T21:01:38.05471-07:00","level":"INFO","msg":"handler: started","stream_id":"xm42ceck"}
+{"time":"2025-03-12T21:01:38.054844-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"xm42ceck"}
+{"time":"2025-03-12T21:01:38.05496-07:00","level":"INFO","msg":"sender: started","stream_id":"xm42ceck"}
+{"time":"2025-03-12T21:01:38.28565-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-12T21:01:38.438568-07:00","level":"INFO","msg":"stream: closing","id":"xm42ceck"}
+{"time":"2025-03-12T21:01:38.438785-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-12T21:01:38.439418-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-12T21:01:38.975766-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-12T21:01:39.118105-07:00","level":"INFO","msg":"sender: closed","stream_id":"xm42ceck"}
+{"time":"2025-03-12T21:01:39.118085-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"xm42ceck"}
+{"time":"2025-03-12T21:01:39.118886-07:00","level":"INFO","msg":"handler: closed","stream_id":"xm42ceck"}
+{"time":"2025-03-12T21:01:39.118945-07:00","level":"INFO","msg":"stream: closed","id":"xm42ceck"}

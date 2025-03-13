@@ -1,0 +1,44 @@
+{
+  "os": "macOS-13.5.2-arm64-arm-64bit",
+  "python": "CPython 3.10.11",
+  "startedAt": "2025-03-13T08:14:43.846406Z",
+  "program": "/Users/josephinewang/Desktop/INtro to ML/CMPM-17-FinalPro/TestLoop.py",
+  "codePath": "TestLoop.py",
+  "git": {
+    "remote": "https://github.com/ZOSS-BOSS/CMPM-17-FinalPro.git",
+    "commit": "b478112bca48985fc162bdce954f14c2b0ea704a"
+  },
+  "email": "jwang722@ucsc.edu",
+  "root": "/Users/josephinewang/Desktop/INtro to ML/CMPM-17-FinalPro",
+  "host": "oakes-100-64-91-237.resnet.ucsc.edu",
+  "executable": "/Users/josephinewang/Desktop/INtro to ML/.venv/bin/python",
+  "codePathLocal": "TestLoop.py",
+  "cpu_count": 8,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "245107195904",
+      "used": "242741706752"
+    },
+    "/System/Volumes/Data": {
+      "total": "245107195904",
+      "used": "242741706752"
+    }
+  },
+  "memory": {
+    "total": "8589934592"
+  },
+  "cpu": {
+    "count": 8,
+    "countLogical": 8
+  },
+  "apple": {
+    "name": "Apple M2",
+    "ecpuCores": 4,
+    "pcpuCores": 4,
+    "gpuCores": 10,
+    "memoryGb": 8,
+    "swapTotalBytes": "19327352832",
+    "ramTotalBytes": "8589934592"
+  }
+}
