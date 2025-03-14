@@ -42,16 +42,17 @@ class AnimalDataset(Dataset):  # Dataset class
                         self.image_paths.append(os.path.join(folder_path, file))
                         self.labels.append(label)  # Label corresponds to the folder index
         self.labels = pd.DataFrame(self.labels)
-        print(self.labels.iloc[5:10,0])
         self.labels = pd.get_dummies(self.labels)
-        self.labels = torch.tensor(self.labels.values, dtype = torch.long)
+        self.labels = torch.tensor(self.labels.values, dtype = torch.int)
+
 
     def __len__(self):
         return len(self.image_paths)
 
     def __getitem__(self, idx):
         image_path = self.image_paths[idx]
-        label = self.labels[idx,:]
+        label = self.labels[idx, :]
+        print({"label:"}, label)
         image = Image.open(image_path).convert("RGB")  # Convert to RGB format
 
         if self.transform:
@@ -94,13 +95,14 @@ train_size = int(0.80 * len(dataset))
 test_size = len(dataset) - train_size
 train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
 
-train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
-test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False)
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
 # Model, loss function, and optimizer setup
 model = AnimalCNN(num_classes=dataset.num_classes)  # Dynamically set the number of classes
 criterion = nn.CrossEntropyLoss()  # Cross-entropy loss for multiclass classification
 optimizer = optim.Adam(model.parameters(), lr=0.001)  # Adam optimizer
+
 
 # Training loop function with accuracy calculation
 def train_loop(dataloader):
@@ -108,8 +110,11 @@ def train_loop(dataloader):
     correct = 0
     total = 0
     for batch_idx, (data, target) in enumerate(dataloader):
+        
         optimizer.zero_grad()  # Clear previous gradients
         output = model(data)  # Forward pass
+        print(output.shape)
+        print(target.shape)
         loss = criterion(output, target)  # CrossEntropyLoss expects class labels as integers
         loss.backward()  # Backpropagate the loss
         optimizer.step()  # Update model parameters
@@ -139,6 +144,7 @@ def test_loop(dataloader):
         accuracy = 100 * correct / total  # Calculate accuracy
         print(f"Test Accuracy: {accuracy:.2f}%")
         wandb.log({"test_accuracy": accuracy})  # Log test accuracy to WandB
+
 
 # Train and Test the Model
 print("Training Loop:")
