@@ -44,14 +44,14 @@ class AnimalDataset(Dataset):  # Dataset class
         self.labels = pd.DataFrame(self.labels)
         print(self.labels.iloc[5:10,0])
         self.labels = pd.get_dummies(self.labels)
-        self.labels = transforms.ToTensor(self.labels)
+        self.labels = torch.tensor(self.labels.values, dtype = torch.long)
 
     def __len__(self):
         return len(self.image_paths)
 
     def __getitem__(self, idx):
         image_path = self.image_paths[idx]
-        label = self.labels.iloc[idx,:]
+        label = self.labels[idx,:]
         image = Image.open(image_path).convert("RGB")  # Convert to RGB format
 
         if self.transform:
