@@ -7,6 +7,8 @@ import torch.nn.functional as F
 from PIL import Image
 import os
 import wandb
+import pandas as pd
+from torchvision.transforms import v2
 
 
 # Initialize WandB for tracking the run
@@ -39,13 +41,17 @@ class AnimalDataset(Dataset):  # Dataset class
                     if file.endswith(('.jpg')):  # You can also add other formats like .png if needed
                         self.image_paths.append(os.path.join(folder_path, file))
                         self.labels.append(label)  # Label corresponds to the folder index
+        self.labels = pd.DataFrame(self.labels)
+        print(self.labels.iloc[5:10,0])
+        self.labels = pd.get_dummies(self.labels)
+        self.labels = transforms.ToTensor(self.labels)
 
     def __len__(self):
         return len(self.image_paths)
 
     def __getitem__(self, idx):
         image_path = self.image_paths[idx]
-        label = self.labels[idx]
+        label = self.labels.iloc[idx,:]
         image = Image.open(image_path).convert("RGB")  # Convert to RGB format
 
         if self.transform:
