@@ -38,11 +38,13 @@ class AnimalDataset(Dataset):  # Dataset class
             folder_path = os.path.join(dataset_folder, folder)
             if os.path.isdir(folder_path):
                 for file in os.listdir(folder_path):
-                    if file.endswith(('.jpg')):  # You can also add other formats like .png if needed
+                      # You can also add other formats like .png if needed
                         self.image_paths.append(os.path.join(folder_path, file))
-                        self.labels.append(label)  # Label corresponds to the folder index
+                        self.labels.append(folder)  # Label corresponds to the folder index
+        print(self.labels)
         self.labels = pd.DataFrame(self.labels)
-        self.labels = pd.get_dummies(self.labels)
+        self.labels = pd.get_dummies(self.labels, columns = [0])
+        print(self.labels.shape)
         self.labels = torch.tensor(self.labels.values, dtype = torch.int)
 
 
@@ -52,7 +54,7 @@ class AnimalDataset(Dataset):  # Dataset class
     def __getitem__(self, idx):
         image_path = self.image_paths[idx]
         label = self.labels[idx, :]
-        print({"label:"}, label)
+        # print({"label:"}, label)
         image = Image.open(image_path).convert("RGB")  # Convert to RGB format
 
         if self.transform:
@@ -72,7 +74,7 @@ class AnimalCNN(nn.Module):
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)  # MaxPooling layer
 
         self.fc1 = nn.Linear(64 * 56 * 75, 512)  # Adjust this size later if needed
-        self.fc2 = nn.Linear(512, num_classes)  # Output layer should have a number of units equal to num_classes
+        self.fc2 = nn.Linear(512, 12)  # Output layer should have a number of units equal to num_classes
 
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))  # Convolution + ReLU + MaxPooling
@@ -113,8 +115,8 @@ def train_loop(dataloader):
         
         optimizer.zero_grad()  # Clear previous gradients
         output = model(data)  # Forward pass
-        print(output.shape)
-        print(target.shape)
+        # print(output.shape)
+        # print(target.shape)
         loss = criterion(output, target)  # CrossEntropyLoss expects class labels as integers
         loss.backward()  # Backpropagate the loss
         optimizer.step()  # Update model parameters
