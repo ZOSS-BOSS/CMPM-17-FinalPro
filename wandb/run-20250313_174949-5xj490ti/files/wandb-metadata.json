@@ -1,0 +1,16 @@
+{
+  "os": "macOS-13.5.2-arm64-arm-64bit",
+  "python": "CPython 3.10.11",
+  "startedAt": "2025-03-14T00:49:49.126938Z",
+  "program": "/Users/josephinewang/Desktop/INtro to ML/CMPM-17-FinalPro/main.py",
+  "codePath": "main.py",
+  "git": {
+    "remote": "https://github.com/ZOSS-BOSS/CMPM-17-FinalPro.git",
+    "commit": "82fdeb3c70a9d89924cc9856b9261b62b4db8057"
+  },
+  "email": "jwang722@ucsc.edu",
+  "root": "/Users/josephinewang/Desktop/INtro to ML/CMPM-17-FinalPro",
+  "host": "eduroam-169-233-213-69.ucsc.edu",
+  "executable": "/Users/josephinewang/Desktop/INtro to ML/.venv/bin/python",
+  "codePathLocal": "main.py"
+}
