@@ -41,10 +41,10 @@ class AnimalDataset(Dataset):  # Dataset class
                       # You can also add other formats like .png if needed
                         self.image_paths.append(os.path.join(folder_path, file))
                         self.labels.append(folder)  # Label corresponds to the folder index
-        print(self.labels)
+        # print(self.labels)
         self.labels = pd.DataFrame(self.labels)
         self.labels = pd.get_dummies(self.labels, columns = [0])
-        print(self.labels.shape)
+        # print(self.labels.shape)
         self.labels = torch.tensor(self.labels.values, dtype = torch.int)
 
 
@@ -115,7 +115,7 @@ def train_loop(dataloader):
         
         optimizer.zero_grad()  # Clear previous gradients
         output = model(data)  # Forward pass
-        # print(output.shape)
+        print(output.shape)
         # print(target.shape)
         loss = criterion(output, target)  # CrossEntropyLoss expects class labels as integers
         loss.backward()  # Backpropagate the loss
