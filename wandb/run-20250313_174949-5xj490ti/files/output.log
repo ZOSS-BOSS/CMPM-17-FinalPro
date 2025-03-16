@@ -1,0 +1,12 @@
+5    1
+6    1
+7    1
+8    1
+9    1
+Name: 0, dtype: int64
+Traceback (most recent call last):
+  File "/Users/josephinewang/Desktop/INtro to ML/CMPM-17-FinalPro/main.py", line 90, in <module>
+    dataset = AnimalDataset(dataset_folder, transform=transform)
+  File "/Users/josephinewang/Desktop/INtro to ML/CMPM-17-FinalPro/main.py", line 47, in __init__
+    self.labels = transforms.ToTensor(self.labels)
+TypeError: ToTensor.__init__() takes 1 positional argument but 2 were given
