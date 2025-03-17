@@ -1,0 +1,44 @@
+{
+  "os": "macOS-13.5.2-arm64-arm-64bit",
+  "python": "CPython 3.10.11",
+  "startedAt": "2025-03-16T21:03:59.100058Z",
+  "program": "/Users/josephinewang/Desktop/INtro to ML/CMPM-17-FinalPro/animal.py",
+  "codePath": "animal.py",
+  "git": {
+    "remote": "https://github.com/ZOSS-BOSS/CMPM-17-FinalPro.git",
+    "commit": "77800cfa9dacfd3723b74573232a3463a800858b"
+  },
+  "email": "jwang722@ucsc.edu",
+  "root": "/Users/josephinewang/Desktop/INtro to ML/CMPM-17-FinalPro",
+  "host": "oakes-100-64-92-14.resnet.ucsc.edu",
+  "executable": "/Users/josephinewang/Desktop/INtro to ML/.venv/bin/python",
+  "codePathLocal": "animal.py",
+  "cpu_count": 8,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "245107195904",
+      "used": "231875256320"
+    },
+    "/System/Volumes/Data": {
+      "total": "245107195904",
+      "used": "231875256320"
+    }
+  },
+  "memory": {
+    "total": "8589934592"
+  },
+  "cpu": {
+    "count": 8,
+    "countLogical": 8
+  },
+  "apple": {
+    "name": "Apple M2",
+    "ecpuCores": 4,
+    "pcpuCores": 4,
+    "gpuCores": 10,
+    "memoryGb": 8,
+    "swapTotalBytes": "7516192768",
+    "ramTotalBytes": "8589934592"
+  }
+}
